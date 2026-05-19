@@ -24,4 +24,11 @@ for column in text_columns:
 
 df['order_date']=pd.to_datetime(df['order_date'],errors='coerce')
 df['quantity']=pd.to_numeric(df['quantity'],errors='coerce').astype("Int64")
-print(df['quantity'])
+df['price']=pd.to_numeric(df['price'],errors='coerce')
+df['price']=df.groupby('product')['price'].transform(lambda x:x.fillna(x.median()))
+df['price']=df['price'].fillna(df['price'].median)
+df=df.dropna(subset=['order_date','quantity'])
+duplicated_orders=df[df.duplicated(subset=['order_id'],keep=False)]
+# df=df.drop_duplicates(subset=['order_id'])
+#Create Total for every order
+df['total']=(df['price'] * df['quantity']).round(2)
