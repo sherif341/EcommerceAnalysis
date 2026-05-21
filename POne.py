@@ -32,3 +32,18 @@ duplicated_orders=df[df.duplicated(subset=['order_id'],keep=False)]
 # df=df.drop_duplicates(subset=['order_id'])
 #Create Total for every order
 df['total']=(df['price'] * df['quantity']).round(2)
+
+df['year']=df['order_date'].dt.year
+df['month']=df['order_date'].dt.to_period("M")
+
+category_Sales= df.groupby('category').agg(
+    total_Sales=('total','sum'),
+    items_sold=('quantity','sum'),
+)
+product_Sales= df.groupby('product').agg(
+    best_saler=('quantity','sum')
+)
+product_Sales= product_Sales.sort_values(by=['best_saler'],ascending=False)
+category_Sales=category_Sales.sort_values(by=['total_Sales'],ascending=False)
+print(category_Sales)
+print(product_Sales)
