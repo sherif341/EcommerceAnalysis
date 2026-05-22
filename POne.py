@@ -47,10 +47,10 @@ product_Sales = df.groupby('product').agg(
 )
 product_Sales = product_Sales.sort_values(by=['best_saler'], ascending=False)
 category_Sales = category_Sales.sort_values(by=['total_Sales'], ascending=False)
-monthly_Sales=df.groupby('month').agg(
+monthly_Sales = df.groupby('month').agg(
     month_sales=('total', 'sum')
 )
 
-pm=df['payment_method'].value_counts().reset_index()
-statusCount=df['status'].value_counts().reset_index()
+pm = df['payment_method'].value_counts().reset_index()
+statusCount = df['status'].value_counts().reset_index()
 print(statusCount)
