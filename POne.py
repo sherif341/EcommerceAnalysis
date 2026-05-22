@@ -45,12 +45,30 @@ product_Sales = df.groupby('product').agg(
     best_saler=('quantity', 'sum'),
     revenue=('total', 'sum')
 )
-product_Sales = product_Sales.sort_values(by=['best_saler'], ascending=False)
-category_Sales = category_Sales.sort_values(by=['total_Sales'], ascending=False)
+product_Sales = product_Sales.sort_values(by=['best_saler'], ascending=True).reset_index()
+category_Sales = category_Sales.sort_values(by=['total_Sales'], ascending=False).reset_index()
 monthly_Sales = df.groupby('month').agg(
     month_sales=('total', 'sum')
 )
 
 pm = df['payment_method'].value_counts().reset_index()
 statusCount = df['status'].value_counts().reset_index()
-print(statusCount)
+
+plt.figure(figsize=(8, 5))
+plt.bar(category_Sales['category'], category_Sales['total_Sales'])
+plt.title('Revenue by category')
+plt.ylabel('Revenue')
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(10, 5))
+plt.barh(product_Sales['product'], product_Sales['best_saler'])
+plt.title('Best Saler items')
+plt.ylabel('Items')
+plt.tight_layout()
+plt.show()
+
+df.to_excel(
+    'Cleaned_ecommerce_orders.xlsx', index=False)
+category_Sales.to_csv('report_of_category.csv')
+product_Sales.to_csv('report_of_product.csv')
