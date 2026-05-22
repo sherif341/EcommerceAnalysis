@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
 
+from matplotlib import colors
 from pandas import set_option
 
 # Reading The data
@@ -53,16 +54,19 @@ monthly_Sales = df.groupby('month').agg(
 
 pm = df['payment_method'].value_counts().reset_index()
 statusCount = df['status'].value_counts().reset_index()
+my_colors = ['#378ADD', '#1D9E75', '#D85A30', '#D4537E', '#888780',
+             '#EF9F27', '#E24B4A', '#7F77DD', '#639922']
 
 plt.figure(figsize=(8, 5))
-plt.bar(category_Sales['category'], category_Sales['total_Sales'])
+plt.bar(category_Sales['category'], category_Sales['total_Sales'],color=my_colors[:len(category_Sales)])
 plt.title('Revenue by category')
 plt.ylabel('Revenue')
 plt.tight_layout()
 plt.show()
 
+
 plt.figure(figsize=(10, 5))
-plt.barh(product_Sales['product'], product_Sales['best_saler'])
+plt.barh(product_Sales['product'], product_Sales['best_saler'],color=my_colors[:len(product_Sales)])
 plt.title('Best Saler items')
 plt.ylabel('Items')
 plt.tight_layout()
